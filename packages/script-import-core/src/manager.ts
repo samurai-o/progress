@@ -7,6 +7,8 @@ export class ScriptManager {
         ScriptManager.manager = this;
         return ScriptManager.manager;
     }
+    private startTime: number = 0;
+    private timeInstance: number | null = null;
     private loading: boolean = false;
     // 脚本加载器实例
     private static manager: ScriptManager;
@@ -78,6 +80,8 @@ export class ScriptManager {
     private start() {
         const func = this.monitorEvent["start"];
         if (!this.loading && isFunc(func)) {
+            // 加载开始时间
+            this.startTime = new Date().getTime();
             this.loading = true;
             func(true);
         };
@@ -86,8 +90,22 @@ export class ScriptManager {
     private end() {
         const func = this.monitorEvent["end"];
         if (this.loading && isFunc(func) && this.checkStatus()) {
+            // 加载结束时间
+            const endTime = new Date().getTime();
             this.loading = false;
-            func(false);
+            console.log('加载时间', endTime - this.startTime);
+            if ((endTime - this.startTime) < 2000 && !this.timeInstance) {
+                this.timeInstance = setTimeout(() => {
+                    func(false);
+                    clearTimeout(this.timeInstance as any);
+                    this.timeInstance = null;
+                }, 2000);
+                return;
+            }
+            if (!this.timeInstance) {
+                func(false);
+                return;
+            }
         }
     }
 
@@ -114,7 +132,6 @@ export class ScriptManager {
      * @param callback 
      */
     public monitor(status: EventType, callback: MonitorEvent) {
-        console.log(status, callback);
         if (isFunc(this.monitorEvent[status])) return;
         this.monitorEvent[status] = callback;
     }

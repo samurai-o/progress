@@ -15,22 +15,25 @@ export function PackageProvider(props: PackageProviderProps) {
     const { manager, children } = props;
     const loading = useRef<ImportLoadingRef>(null);
     const startEvent = useCallback((status: boolean) => {
-        const node = React.createElement(ImportLoading, { ref: loading });
-        const scriptLoading = document.createElement("div");
-        document.body.append(scriptLoading);
-        console.log(node);
-        render(node, scriptLoading, () => {
+        const oldEle = document.getElementById("dynamic-scipt-loading");
+        // 当前并没有初始加载过loading
+        if (!oldEle) {
+            const node = React.createElement(ImportLoading, { ref: loading });
+            const scriptLoading = document.createElement("div");
+            document.body.append(scriptLoading);
+            render(node, scriptLoading, () => {
+                if (loading.current) loading.current.open();
+            });
+        } else {
             if (loading.current) loading.current.open();
-        });
+        }
     }, [loading.current]);
     const endEvent = useCallback((status: boolean) => {
-        console.log(loading.current);
         if (loading.current) {
             loading.current.close();
         }
     }, [loading.current]);
 
-    console.log('provider');
     manager.monitor("end", endEvent);
     // 资源开始加载时候执行, 未加载完时后续推入的状态不做执行
     manager.monitor("start", startEvent);

@@ -46,8 +46,8 @@ export const ImportLoading = forwardRef((props: ImportLoadingProps, ref) => {
         open: openHandler,
         close: closeHandler
     }))
-    console.log('loading func', open);
+
     return (
-        <Container open={open} className={classname({ open, close: !open })}>{props.children}</Container>
+        <Container id="dynamic-scipt-loading" open={open} className={classname({ open, close: !open })}>{props.children}</Container>
     );
 })
