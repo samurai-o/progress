@@ -1,5 +1,5 @@
 import React from 'react';
-import * as styled from 'styled-components';
+import styled from 'styled-components';
 import classname from 'classnames';
 
 console.log(styled);
