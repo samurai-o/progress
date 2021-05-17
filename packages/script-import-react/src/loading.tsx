@@ -4,13 +4,14 @@ import classname from 'classnames';
 const css: StyledInterface = (styled as any).default;
 const Container = css.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
-    top: 0,
-    left: 0,
-    width: 100%,
-    height: 100%,
-    zIndex: 10000,
-    transition: all 1s ease,
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    zIndex: 10000;
+    transition: all 1s ease;
     background: #fff;
+    opacity: ${props => !!props.open ? 1 : 0};
     '&.open': {
         opacity: 1;
     },
