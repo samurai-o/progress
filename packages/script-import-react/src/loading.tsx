@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import classname from 'classnames';
 
-console.log(styled.div, styled.default.div);
+
+window['styled'] = styled;
+console.log(styled.div);
 const Container = styled.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
     top: 0;
@@ -44,7 +46,7 @@ export class ImportLoading extends React.Component<ImportLoadingProps, ImportLoa
     render() {
         const { open } = this.state;
         return (
-            <Container className={classname({ open, close: !open })}>{this.props.children}</Container>
+            <Container open={open} className={classname({ open, close: !open })}>{this.props.children}</Container>
         );
     }
 }

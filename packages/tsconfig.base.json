@@ -13,11 +13,10 @@
     "moduleResolution": "Node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "ES6",
+    "target": "ESNext",
     "sourceMap": false,
-    "allowJs": false,
+    "allowJs": true,
     "strict": true,
-    "strictNullChecks": false,
     "jsx": "react"
   },
   "exclude": [

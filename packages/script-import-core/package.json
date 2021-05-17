@@ -18,7 +18,8 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "sam-tools": "^1.0.8"
+    "sam-tools": "^1.0.8",
+    "typescript": "^4.2.4"
   },
   "peerDependencies": {
     "sam-tools": "^1.0.8"

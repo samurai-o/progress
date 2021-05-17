@@ -33,7 +33,7 @@ export function PackageProvider(props: PackageProviderProps) {
             if (!loading.current) {
                 const node = React.createElement(ImportLoading, { children: null });
                 loading.current = node;
-                console.log(node);
+                // console.log(node);
                 render(loading.current, document.body);
             }
             (loading.current as any).open();

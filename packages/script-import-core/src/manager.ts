@@ -33,7 +33,7 @@ export class ScriptManager {
      * @param item 
      * @returns 
      */
-    private async loader(item: ScriptInfo): Promise<boolean> {
+    private loader(item: ScriptInfo): Promise<boolean> {
         const node = document.createElement('script');
         if (isEmpty(item) || !isString(item.script)) return Promise.resolve(false);
         const { name, version, script } = item;
