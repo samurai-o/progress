@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { render } from 'react-dom';
-import { isObject } from 'sam-tools';
 import { ScriptInfo } from 'script-import-core';
 import { ScriptManager } from 'script-import-core';
-import { ImportLoading, ImportLoadingProps, ImportLoadingRef } from './loading';
+import { DefaultLoading, ImportLoading, ImportLoadingRef } from './loading';
 import { PackageContext } from './packageContext';
 
 export type PackageProviderProps = {
     children: JSX.Element | JSX.Element[];
     manager: ScriptManager;
+    loading?: JSX.Element;
 }
 
 export function PackageProvider(props: PackageProviderProps) {
@@ -18,8 +18,12 @@ export function PackageProvider(props: PackageProviderProps) {
         const oldEle = document.getElementById("dynamic-scipt-loading");
         // 当前并没有初始加载过loading
         if (!oldEle) {
-            const node = React.createElement(ImportLoading, { ref: loading });
+            const node = React.createElement(ImportLoading, {
+                ref: loading,
+                children: props.loading || React.createElement(DefaultLoading),
+            });
             const scriptLoading = document.createElement("div");
+            scriptLoading.id = "dynamic-scipt-loading-container";
             document.body.append(scriptLoading);
             render(node, scriptLoading, () => {
                 if (loading.current) loading.current.open();

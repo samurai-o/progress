@@ -93,7 +93,6 @@ export class ScriptManager {
             // 加载结束时间
             const endTime = new Date().getTime();
             this.loading = false;
-            console.log('加载时间', endTime - this.startTime);
             if ((endTime - this.startTime) < 2000 && !this.timeInstance) {
                 this.timeInstance = setTimeout(() => {
                     func(false);
