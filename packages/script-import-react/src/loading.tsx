@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import styled, { StyledInterface } from 'styled-components';
 import classname from 'classnames';
 const css: StyledInterface = (styled as any).default;
@@ -27,25 +27,26 @@ export type ImportLoadingState = {
     open: boolean;
 }
 
-/**
- * 包加载loading
- */
-export class ImportLoading extends React.Component<ImportLoadingProps, ImportLoadingState, any> {
-    constructor(props: ImportLoadingProps) {
-        super(props);
-        this.open = this.open.bind(this);
-        this.state = {
-            open: false, // 开启状态
-        }
-    }
-    open() {
-        this.setState({ open: true });
-
-    }
-    render() {
-        const { open } = this.state;
-        return (
-            <Container open={open} className={classname({ open, close: !open })}>{this.props.children}</Container>
-        );
-    }
+export type ImportLoadingRef = {
+    open: () => void;
+    close: () => void;
 }
+
+export const ImportLoading = forwardRef((props: ImportLoadingProps, ref) => {
+    const [open, setOpen] = useState(false);
+    const openHandler = useCallback(() => {
+        setOpen(true);
+    }, [open]);
+    const closeHandler = useCallback(() => {
+        setOpen(false);
+    }, [open]);
+
+    useImperativeHandle(ref, () => ({
+        open: openHandler,
+        close: closeHandler
+    }))
+
+    return (
+        <Container open={open} className={classname({ open, close: !open })}>{props.children}</Container>
+    );
+})
