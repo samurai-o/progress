@@ -5,20 +5,21 @@ import classname from 'classnames';
 
 window['styled'] = styled;
 console.log(styled.div);
-const Container = styled.div<Pick<ImportLoadingState, "open">>`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    &.open {
+const Container = styled.div<Pick<ImportLoadingState, "open">>({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 10000,
+    '&.open': {
+
+    },
+    '&.close': {
 
     }
-    &.close {
 
-    }
-`;
+});
 
 export type ImportLoadingProps = {
     children?: JSX.Element;
