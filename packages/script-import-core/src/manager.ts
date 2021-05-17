@@ -39,7 +39,7 @@ export class ScriptManager {
         const { name, version, script } = item;
         this.publish({ name, version, script, status: true });
         node.src = item.script;
-        document.append(node);
+        document.body.append(node);
         return new Promise((res) => {
             node.addEventListener('load', () => {
                 res(window[item.name as any]);

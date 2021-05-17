@@ -4,8 +4,7 @@ import classname from 'classnames';
 
 
 window['styled'] = styled;
-console.log(styled.div);
-const Container = styled.div<Pick<ImportLoadingState, "open">>({
+const Container = styled.default.div<Pick<ImportLoadingState, "open">>({
     position: "absolute",
     top: 0,
     left: 0,

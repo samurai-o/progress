@@ -32,13 +32,15 @@ export function PackageProvider(props: PackageProviderProps) {
             // 打开状态下显示加载loading
             if (!loading.current) {
                 const node = React.createElement(ImportLoading);
-                loading.current = node;
-                // console.log(node);
-                render(loading.current, document.body);
+                const scriptLoading = document.createElement("div");
+                document.body.append(scriptLoading);
+                //loading.current = node;
+                console.log(node);
+                render(node, scriptLoading);
             }
-            (loading.current as any).open();
+            // (loading.current as any).open();
         } else {
-            (loading.current as any).close();
+            // (loading.current as any).close();
         }
     }, [status, loading.current]);
 
