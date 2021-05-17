@@ -1,10 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { StyledInterface } from 'styled-components';
 import classname from 'classnames';
-
-
-window['styled'] = styled;
-const Container = styled.default.div<Pick<ImportLoadingState, "open">>({
+const css: StyledInterface = (styled as any).default;
+const Container = css.div<Pick<ImportLoadingState, "open">>({
     position: "absolute",
     top: 0,
     left: 0,

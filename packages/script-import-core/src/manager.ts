@@ -57,12 +57,18 @@ export class ScriptManager {
 
     private start() {
         const func = this.monitorEvent["start"];
-        if (!this.loading && isFunc(func)) func(true);
+        if (!this.loading && isFunc(func)) {
+            this.loading = true;
+            func(true);
+        };
     }
 
     private end() {
         const func = this.monitorEvent["end"];
-        if (this.loading && isFunc(func) && this.checkStatus()) func(false);
+        if (this.loading && isFunc(func) && this.checkStatus()) {
+            this.loading = false;
+            func(false);
+        }
     }
 
     /**

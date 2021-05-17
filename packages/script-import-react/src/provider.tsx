@@ -23,6 +23,7 @@ export function PackageProvider(props: PackageProviderProps) {
         });
         // 资源开始加载时候执行, 未加载完时后续推入的状态不做执行
         manager.monitor("start", (status) => {
+            console.log(status);
             setStatus(status);
         })
     }, [manager]);
