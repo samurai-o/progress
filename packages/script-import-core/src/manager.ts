@@ -22,7 +22,7 @@ export class ScriptManager {
     private publish(item: ScriptInfo) {
         const task = this.scripts.find((sc) => sc.name === item.name);
         if (task) {
-            this.scripts.filter((script) => script.name !== item.name).concat({ ...task, ...item });
+            this.scripts = this.scripts.filter((script) => script.name !== item.name).concat({ ...task, ...item });
             return;
         }
         this.scripts.push(item);
