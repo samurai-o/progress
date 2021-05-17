@@ -20,6 +20,7 @@ export function PackageProvider(props: PackageProviderProps) {
         document.body.append(scriptLoading);
         console.log(node);
         render(node, scriptLoading);
+        console.log(loading.current);
         if (loading.current) return loading.current.open();
     }, [loading.current]);
     const endEvent = useCallback((status: boolean) => {

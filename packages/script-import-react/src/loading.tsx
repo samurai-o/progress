@@ -8,7 +8,7 @@ const Container = css.div<Pick<ImportLoadingState, "open">>`
     left: 0;
     width: 100%;
     height: 100%;
-    zIndex: 10000;
+    z-index: 10000;
     transition: all 1s ease;
     background: #fff;
     opacity: ${props => !!props.open ? 1 : 0};
@@ -46,7 +46,7 @@ export const ImportLoading = forwardRef((props: ImportLoadingProps, ref) => {
         open: openHandler,
         close: closeHandler
     }))
-
+    console.log('loading func', open);
     return (
         <Container open={open} className={classname({ open, close: !open })}>{props.children}</Container>
     );
