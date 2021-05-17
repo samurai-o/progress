@@ -53,8 +53,8 @@ export class ScriptManager {
             });
         }).then((res) => {
             // 脚本加载完成后删除挂载在window中的对象
-            delete window[item.name as any];
             this.publish({ name, version, script, status: false, object: res });
+            delete window[item.name as any];
             return true;
         }).catch(() => {
             this.publish({ name, version, script, status: false });
@@ -119,6 +119,7 @@ export class ScriptManager {
 
     public getPackage<P = any>(name: string, version: string): P | null {
         const pkg = this.scripts.find((script) => script.name === name && script.version === version);
+        console.log(name, version, this.scripts);
         if (isObject(pkg)) return pkg?.object;
         return null;
     }
