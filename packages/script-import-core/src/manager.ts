@@ -114,12 +114,12 @@ export class ScriptManager {
      * @param callback 
      */
     public monitor(status: EventType, callback: MonitorEvent) {
+        if (isFunc(this.monitorEvent[status])) return;
         this.monitorEvent[status] = callback;
     }
 
     public getPackage<P = any>(name: string, version: string): P | null {
         const pkg = this.scripts.find((script) => script.name === name && script.version === version);
-        console.log(name, version, this.scripts);
         if (isObject(pkg)) return pkg?.object;
         return null;
     }

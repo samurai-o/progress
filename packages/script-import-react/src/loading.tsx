@@ -2,21 +2,22 @@ import React from 'react';
 import styled, { StyledInterface } from 'styled-components';
 import classname from 'classnames';
 const css: StyledInterface = (styled as any).default;
-const Container = css.div<Pick<ImportLoadingState, "open">>({
-    position: "absolute",
+const Container = css.div<Pick<ImportLoadingState, "open">>`
+    position: absolute;
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
+    width: 100%,
+    height: 100%,
     zIndex: 10000,
+    transition: all 1s ease,
+    background: #fff;
     '&.open': {
-
+        opacity: 1;
     },
     '&.close': {
-
+        opacity: 0;
     }
-
-});
+`
 
 export type ImportLoadingProps = {
     children?: JSX.Element;

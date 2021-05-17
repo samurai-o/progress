@@ -15,6 +15,9 @@ export function PackageProvider(props: PackageProviderProps) {
     const [status, setStatus] = useState(false);
     const loading = useRef<React.CElement<ImportLoadingProps, ImportLoading>>(null);
     const { manager, children } = props;
+    manager.monitor("start", (status) => {
+
+    });
     useEffect(() => {
         console.log('provider');
         // 所有资源加载完毕
@@ -23,10 +26,9 @@ export function PackageProvider(props: PackageProviderProps) {
         });
         // 资源开始加载时候执行, 未加载完时后续推入的状态不做执行
         manager.monitor("start", (status) => {
-            console.log(status);
             setStatus(status);
         })
-    }, []);
+    });
 
     useEffect(() => {
         if (status) {
