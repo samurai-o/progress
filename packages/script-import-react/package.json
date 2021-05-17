@@ -19,7 +19,11 @@
   "dependencies": {
     "script-import-core": "^0.0.2",
     "tslib": "^2.2.0",
-    "undefined": "/Users/fred/develop/github/script-import"
+    "classnames": "^2.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "sam-tools": "^1.0.8",
+    "styled-components": "^5.3.0"
   },
   "peerDependencies": {
     "classnames": "^2.3.1",

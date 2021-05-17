@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "tslib": "^2.2.0",
-    "undefined": "/Users/fred/develop/github/script-import"
+    "sam-tools": "^1.0.8"
   }
 }

@@ -39,6 +39,7 @@ export class ImportLoading extends React.Component<ImportLoadingProps, ImportLoa
     }
     open() {
         this.setState({ open: true });
+
     }
     render() {
         const { open } = this.state;
