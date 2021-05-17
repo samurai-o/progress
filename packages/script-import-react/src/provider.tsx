@@ -26,21 +26,15 @@ export function PackageProvider(props: PackageProviderProps) {
     })
 
     useEffect(() => {
+        console.log('loading', status);
         if (status) {
-            // 打开状态下显示加载loading
-            if (!loading.current) {
-                const node = React.createElement(ImportLoading);
-                const scriptLoading = document.createElement("div");
-                document.body.append(scriptLoading);
-                //loading.current = node;
-                console.log(node);
-                render(node, scriptLoading);
-            }
-            // (loading.current as any).open();
-        } else {
-            // (loading.current as any).close();
+            const node = React.createElement(ImportLoading);
+            const scriptLoading = document.createElement("div");
+            document.body.append(scriptLoading);
+            console.log(node);
+            render(node, scriptLoading);
         }
-    }, [status, loading.current]);
+    }, [status]);
 
     /**
      * 单个加载
