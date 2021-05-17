@@ -94,6 +94,7 @@ export class ScriptManager {
      * @param callback 
      */
     public monitor(status: EventType, callback: MonitorEvent) {
+        console.log(status, callback);
         this.monitorEvent[status] = callback;
     }
 
