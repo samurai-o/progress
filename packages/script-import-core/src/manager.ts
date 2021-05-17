@@ -114,6 +114,7 @@ export class ScriptManager {
      * @param callback 
      */
     public monitor(status: EventType, callback: MonitorEvent) {
+        console.log(status, callback);
         if (isFunc(this.monitorEvent[status])) return;
         this.monitorEvent[status] = callback;
     }
