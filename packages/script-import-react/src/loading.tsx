@@ -11,6 +11,9 @@ const Container = css.div<Pick<ImportLoadingState, "open">>`
     z-index: 10000;
     transition: all 1s ease;
     background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: ${props => !!props.open ? 1 : 0};
     '&.open': {
         opacity: 1;
@@ -85,6 +88,7 @@ const DefaultLoadingContainer = css.div`
         z-index:1;
         height:100%;
         border-radius:10%;
+        background: #30b2f3;
         -webkit-animation:${squarejellyboxanimate} 0.6s -0.1s linear infinite;
         -moz-animation:${squarejellyboxanimate} 0.6s -0.1s linear infinite;
         -o-animation:${squarejellyboxanimate} 0.6s -0.1s linear infinite;
