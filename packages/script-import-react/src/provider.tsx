@@ -15,20 +15,14 @@ export function PackageProvider(props: PackageProviderProps) {
     const [status, setStatus] = useState(false);
     const loading = useRef<React.CElement<ImportLoadingProps, ImportLoading>>(null);
     const { manager, children } = props;
+    console.log('provider');
+    manager.monitor("end", (status) => {
+        setStatus(status);
+    });
+    // 资源开始加载时候执行, 未加载完时后续推入的状态不做执行
     manager.monitor("start", (status) => {
-
-    });
-    useEffect(() => {
-        console.log('provider');
-        // 所有资源加载完毕
-        manager.monitor("end", (status) => {
-            setStatus(status);
-        });
-        // 资源开始加载时候执行, 未加载完时后续推入的状态不做执行
-        manager.monitor("start", (status) => {
-            setStatus(status);
-        })
-    });
+        setStatus(status);
+    })
 
     useEffect(() => {
         if (status) {
