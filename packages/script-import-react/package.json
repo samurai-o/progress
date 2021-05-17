@@ -1,6 +1,6 @@
 {
   "name": "script-import-react",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
   "homepage": "",
@@ -17,7 +17,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "script-import-core": "^0.0.0",
+    "script-import-core": "^0.0.1",
     "tslib": "^2.2.0",
     "undefined": "/Users/fred/develop/github/script-import"
   },
