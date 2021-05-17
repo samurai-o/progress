@@ -1,6 +1,6 @@
 {
   "name": "script-import-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
   "homepage": "",
@@ -23,7 +23,7 @@
     "sam-tools": "^1.0.8"
   },
   "dependencies": {
-    "tslib": "^2.2.0",
-    "sam-tools": "^1.0.8"
+    "sam-tools": "^1.0.8",
+    "tslib": "^2.2.0"
   }
 }
