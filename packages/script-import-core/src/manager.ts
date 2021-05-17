@@ -29,16 +29,23 @@ export class ScriptManager {
     }
 
     /**
-     * 脚本加载方法
-     * @param item 
-     * @returns 
+     * 检查静态文件是否已经实例
+     * @param name 
      */
-    private loader(item: ScriptInfo): Promise<boolean> {
-        const node = document.createElement('script');
-        if (isEmpty(item) || !isString(item.script)) return Promise.resolve(false);
+    private getScriptInstance(name: string) {
+        return document.getElementById(`dynamic-scipt-${name}`);
+    }
+
+    private setScriptInstance(item: ScriptInfo) {
         const { name, version, script } = item;
-        this.publish({ name, version, script, status: true });
+        const oldNode = this.getScriptInstance(name);
+        if (!!oldNode) {
+            oldNode.remove();
+        }
+        const node = document.createElement('script');
         node.src = item.script;
+        node.id = `dynamic-scipt-${name}`;
+        node.dataset.version = version;
         document.body.append(node);
         return new Promise((res) => {
             node.addEventListener('load', () => {
@@ -53,6 +60,19 @@ export class ScriptManager {
             this.publish({ name, version, script, status: false });
             return false;
         });
+    }
+
+    /**
+     * 脚本加载方法
+     * @param item 
+     * @returns 
+     */
+    private loader(item: ScriptInfo): Promise<boolean> {
+        const node = document.createElement('script');
+        if (isEmpty(item) || !isString(item.script)) return Promise.resolve(false);
+        const { name, version, script } = item;
+        this.publish({ name, version, script, status: true });
+        return this.setScriptInstance(item);
     }
 
     private start() {
@@ -94,7 +114,6 @@ export class ScriptManager {
      * @param callback 
      */
     public monitor(status: EventType, callback: MonitorEvent) {
-        console.log(status, callback);
         this.monitorEvent[status] = callback;
     }
 

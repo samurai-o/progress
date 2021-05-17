@@ -16,6 +16,7 @@ export function PackageProvider(props: PackageProviderProps) {
     const loading = useRef<React.CElement<ImportLoadingProps, ImportLoading>>(null);
     const { manager, children } = props;
     useEffect(() => {
+        console.log('provider');
         // 所有资源加载完毕
         manager.monitor("end", (status) => {
             setStatus(status);
@@ -25,7 +26,7 @@ export function PackageProvider(props: PackageProviderProps) {
             console.log(status);
             setStatus(status);
         })
-    }, [manager]);
+    }, []);
 
     useEffect(() => {
         if (status) {
