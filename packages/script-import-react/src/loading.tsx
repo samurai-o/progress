@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import classname from 'classnames';
 
-console.log(styled);
+console.log(styled.div, styled.default);
 const Container = styled.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
     top: 0;
