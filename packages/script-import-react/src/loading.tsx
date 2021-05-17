@@ -37,11 +37,9 @@ export class ImportLoading extends React.Component<ImportLoadingProps, ImportLoa
             open: false, // 开启状态
         }
     }
-
     open() {
         this.setState({ open: true });
     }
-
     render() {
         const { open } = this.state;
         return (
