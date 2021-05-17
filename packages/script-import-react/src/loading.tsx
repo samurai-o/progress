@@ -1,11 +1,11 @@
 import React from 'react';
-import * as styled from 'styled-components';
+import styled from 'styled-components';
 import classname from 'classnames';
 
 
 window['styled'] = styled;
-console.log(styled.default.div);
-const Container = styled.default.div<Pick<ImportLoadingState, "open">>`
+console.log(styled.div);
+const Container = styled.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
     top: 0;
     left: 0;
@@ -31,7 +31,7 @@ export type ImportLoadingState = {
 /**
  * 包加载loading
  */
-export class ImportLoading extends React.Component<ImportLoadingProps, ImportLoadingState> {
+export class ImportLoading extends React.Component<ImportLoadingProps, ImportLoadingState, any> {
     constructor(props: ImportLoadingProps) {
         super(props);
         this.open = this.open.bind(this);

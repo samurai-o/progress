@@ -31,7 +31,7 @@ export function PackageProvider(props: PackageProviderProps) {
         if (status) {
             // 打开状态下显示加载loading
             if (!loading.current) {
-                const node = React.createElement(ImportLoading, { children: null });
+                const node = React.createElement(ImportLoading);
                 loading.current = node;
                 // console.log(node);
                 render(loading.current, document.body);
