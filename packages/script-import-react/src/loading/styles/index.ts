@@ -29,7 +29,6 @@ export const LoadingContainer = css.div<Pick<LoadingContainerProps, "open">>`
     align-items: center;
     justify-content: center;
     opacity: ${props => !!props.open ? 1 : 0};
-    pointer-events: ${props => !!props.open ? "all" : "none"};
     '&.open': {
         opacity: 1;
     },
