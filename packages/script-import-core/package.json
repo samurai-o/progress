@@ -27,5 +27,6 @@
   "dependencies": {
     "sam-tools": "^1.0.8",
     "tslib": "^2.2.0"
-  }
+  },
+  "gitHead": "59856e73c6c2ca6ae33ed1479f577360dba267d3"
 }
