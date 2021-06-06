@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import styled, { StyledInterface, keyframes } from 'styled-components';
 import classname from 'classnames';
-const css: StyledInterface = (styled as any).default;
+const css: StyledInterface = (styled as any).default || styled;
 const Container = css.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
     top: 0;
