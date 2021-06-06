@@ -7,11 +7,11 @@ export class ScriptManager {
         ScriptManager.manager = this;
         return ScriptManager.manager;
     }
+    // 脚本加载器实例
+    private static manager: ScriptManager;
     private startTime: number = 0;
     private timeInstance: number | null = null;
     private loading: boolean = false;
-    // 脚本加载器实例
-    private static manager: ScriptManager;
     private scripts: ScriptInfo[] = [];
     private monitorEvent: { [key in EventType]?: MonitorEvent } = {};
 
@@ -50,7 +50,8 @@ export class ScriptManager {
         node.dataset.version = version;
         document.body.append(node);
         return new Promise((res) => {
-            node.addEventListener('load', () => {
+            node.addEventListener('load', (even) => {
+
                 res(window[item.name as any]);
             });
         }).then((res) => {
@@ -77,7 +78,7 @@ export class ScriptManager {
         return this.setScriptInstance(item);
     }
 
-    private start() {
+    public start() {
         const func = this.monitorEvent["start"];
         if (!this.loading && isFunc(func)) {
             // 加载开始时间
@@ -87,7 +88,7 @@ export class ScriptManager {
         };
     }
 
-    private end() {
+    public end() {
         const func = this.monitorEvent["end"];
         if (this.loading && isFunc(func) && this.checkStatus()) {
             // 加载结束时间

@@ -58,8 +58,17 @@ export function PackageProvider(props: PackageProviderProps) {
         await manager.imports(items);
     }
 
+    const status = async (status: boolean) => {
+        if (status) {
+            await manager.start();
+        } else {
+            await manager.end();
+        }
+    }
+
     return (
         <PackageContext.Provider value={{
+            status,
             packages: [],
             importPackage,
             importPackages,
