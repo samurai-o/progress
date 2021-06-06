@@ -1,8 +1,7 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import styled, { StyledInterface, keyframes } from 'styled-components';
 import classname from 'classnames';
-const css: StyledInterface = (styled as any).default || styled;
-const Container = css.div<Pick<ImportLoadingState, "open">>`
+const Container = styled.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
     top: 0;
     left: 0;
@@ -66,7 +65,7 @@ const squarejellyboxanimate = keyframes`
 const squarejellyboxshadow = keyframes`
    50%{-webkit-transform:scale(1.25, 1);transform:scale(1.25, 1)}
 `;
-const DefaultLoadingContainer = css.div`
+const DefaultLoadingContainer = styled.div`
     position:relative;
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
