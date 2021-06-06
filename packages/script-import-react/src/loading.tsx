@@ -2,7 +2,6 @@ import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'r
 import styled, { StyledInterface, keyframes } from 'styled-components';
 import classname from 'classnames';
 (window as any).styled = styled;
-console.log(styled, styled.div);
 const Container = styled.div<Pick<ImportLoadingState, "open">>`
     position: absolute;
     top: 0;
