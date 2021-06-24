@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { isFunc } from 'sam-tools';
+import { isFunc } from "@frade-sam/samtools";
 import { PackageContext, PackageContextType } from './packageContext';
 
 export type PackageConsumerProps = {

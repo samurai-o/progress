@@ -13,13 +13,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "sam-tools"], factory);
+        define(["require", "exports", "@frade-sam/samtools"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ScriptManager = void 0;
-    const sam_tools_1 = require("sam-tools");
+    const samtools_1 = require("@frade-sam/samtools");
     class ScriptManager {
         constructor() {
             this.startTime = 0;
@@ -31,7 +31,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 start: [],
                 end: [],
             };
-            if (sam_tools_1.isObject(ScriptManager.manager))
+            if (samtools_1.isObject(ScriptManager.manager))
                 return ScriptManager.manager;
             ScriptManager.manager = this;
             return ScriptManager.manager;
@@ -83,7 +83,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         }
         loader(item) {
             const node = document.createElement('script');
-            if (sam_tools_1.isEmpty(item) || !sam_tools_1.isString(item.script))
+            if (samtools_1.isEmpty(item) || !samtools_1.isString(item.script))
                 return Promise.resolve(false);
             const { name, version, script } = item;
             this.publish('script', { name, version, script, status: true });
@@ -91,7 +91,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         }
         start(item) {
             const funcs = this.monitorEvent["start"];
-            if (!this.loading && sam_tools_1.isArray(funcs)) {
+            if (!this.loading && samtools_1.isArray(funcs)) {
                 if (item)
                     this.publish("fetch", Object.assign(Object.assign({}, item), { status: true }));
                 this.startTime = new Date().getTime();
@@ -104,7 +104,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             const funcs = this.monitorEvent["end"];
             if (item)
                 this.publish("fetch", Object.assign(Object.assign({}, item), { status: false }));
-            if (this.loading && sam_tools_1.isArray(funcs) && this.checkStatus()) {
+            if (this.loading && samtools_1.isArray(funcs) && this.checkStatus()) {
                 const endTime = new Date().getTime();
                 this.loading = false;
                 if ((endTime - this.startTime) < 2000 && !this.timeInstance) {
@@ -138,14 +138,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             });
         }
         monitor(status, key, callback) {
-            var _a;
-            if (sam_tools_1.isFunc(this.monitorEvent[status]))
+            var _a, _b, _c;
+            if (samtools_1.isFunc(this.monitorEvent[status]))
                 return;
-            (_a = this.monitorEvent[status]) === null || _a === void 0 ? void 0 : _a.push({ key, func: callback });
+            const old = (_a = this.monitorEvent[status]) === null || _a === void 0 ? void 0 : _a.find((event) => event.key === key);
+            if (old) {
+                (_b = this.monitorEvent[status]) === null || _b === void 0 ? void 0 : _b.filter((event) => event.key !== key).concat([{ key, func: callback }]);
+                return;
+            }
+            (_c = this.monitorEvent[status]) === null || _c === void 0 ? void 0 : _c.push({ key, func: callback });
         }
         getPackage(name, version) {
             const pkg = this.scripts.find((script) => script.name === name && script.version === version);
-            if (sam_tools_1.isObject(pkg))
+            if (samtools_1.isObject(pkg))
                 return pkg === null || pkg === void 0 ? void 0 : pkg.object;
             return null;
         }

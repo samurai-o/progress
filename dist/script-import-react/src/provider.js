@@ -70,8 +70,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 loading.current.close();
             }
         }, [loading.current]);
-        manager.monitor("end", endEvent);
-        manager.monitor("start", startEvent);
+        manager.monitor("end", "react-loading", endEvent);
+        manager.monitor("start", "react-loading", startEvent);
         const importPackage = (item) => __awaiter(this, void 0, void 0, function* () {
             yield manager.import(item);
         });

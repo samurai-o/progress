@@ -1,4 +1,4 @@
-import { isEmpty, isFunc, isObject, isString, isArray } from 'sam-tools';
+import { isEmpty, isFunc, isObject, isString, isArray } from '@frade-sam/samtools';
 import { EventType, FecthTask, GetFuncType, MonitorEvent, ScriptTask } from './interface';
 
 export class ScriptManager {

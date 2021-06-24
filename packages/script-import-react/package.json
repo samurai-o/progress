@@ -18,10 +18,10 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@frade-sam/samtools": "^1.0.17",
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "sam-tools": "^1.0.8",
     "script-import-core": "^0.0.41",
     "styled-components": "^5.3.0",
     "tslib": "^2.2.0"
@@ -30,7 +30,7 @@
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "sam-tools": "^1.0.8",
+    "@frade-sam/samtools": "^1.0.17",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "sam-tools": "^1.0.8",
+    "@frade-sam/samtools": "^1.0.17",
     "styled-components": "^5.3.0"
   },
   "gitHead": "59856e73c6c2ca6ae33ed1479f577360dba267d3"
