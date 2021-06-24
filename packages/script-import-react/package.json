@@ -1,6 +1,6 @@
 {
   "name": "script-import-react",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
   "homepage": "",
@@ -22,7 +22,7 @@
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "script-import-core": "^0.0.42",
+    "script-import-core": "^0.0.43",
     "styled-components": "^5.3.0",
     "tslib": "^2.2.0"
   },
