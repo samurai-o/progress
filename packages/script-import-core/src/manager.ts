@@ -148,6 +148,11 @@ export class ScriptManager {
      */
     public monitor(status: EventType, key: string, callback: MonitorEvent) {
         if (isFunc(this.monitorEvent[status])) return;
+        const old = this.monitorEvent[status]?.find((event) => event.key === key);
+        if (old) {
+            this.monitorEvent[status]?.filter((event) => event.key !== key).concat([{ key, func: callback }]);
+            return;
+        }
         this.monitorEvent[status]?.push({ key, func: callback });
     }
 
