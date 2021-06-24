@@ -1,6 +1,6 @@
 {
   "name": "script-import-react",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
   "homepage": "",
@@ -22,25 +22,25 @@
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "script-import-core": "^0.0.41",
+    "script-import-core": "^0.0.42",
     "styled-components": "^5.3.0",
     "tslib": "^2.2.0"
   },
   "peerDependencies": {
+    "@frade-sam/samtools": "^1.0.17",
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "@frade-sam/samtools": "^1.0.17",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
+    "@frade-sam/samtools": "^1.0.17",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.5",
     "@types/styled-components": "^5.1.9",
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "@frade-sam/samtools": "^1.0.17",
     "styled-components": "^5.3.0"
   },
   "gitHead": "59856e73c6c2ca6ae33ed1479f577360dba267d3"
