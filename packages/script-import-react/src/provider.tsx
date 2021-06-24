@@ -38,9 +38,9 @@ export function PackageProvider(props: PackageProviderProps) {
         }
     }, [loading.current]);
 
-    manager.monitor("end", endEvent);
+    manager.monitor("end", "react-loading", endEvent);
     // 资源开始加载时候执行, 未加载完时后续推入的状态不做执行
-    manager.monitor("start", startEvent);
+    manager.monitor("start", "react-loading", startEvent);
 
     /**
      * 单个加载

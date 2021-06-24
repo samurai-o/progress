@@ -27,7 +27,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             this.loading = false;
             this.scripts = [];
             this.fetchs = [];
-            this.monitorEvent = {};
+            this.monitorEvent = {
+                start: [],
+                end: [],
+            };
             if (sam_tools_1.isObject(ScriptManager.manager))
                 return ScriptManager.manager;
             ScriptManager.manager = this;
@@ -87,33 +90,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             return this.setScriptInstance(item);
         }
         start(item) {
-            const func = this.monitorEvent["start"];
-            if (!this.loading && sam_tools_1.isFunc(func)) {
+            const funcs = this.monitorEvent["start"];
+            if (!this.loading && sam_tools_1.isArray(funcs)) {
                 if (item)
                     this.publish("fetch", Object.assign(Object.assign({}, item), { status: true }));
                 this.startTime = new Date().getTime();
                 this.loading = true;
-                func(true);
+                funcs.forEach((func) => func.func(true));
             }
             ;
         }
         end(item) {
-            const func = this.monitorEvent["end"];
+            const funcs = this.monitorEvent["end"];
             if (item)
                 this.publish("fetch", Object.assign(Object.assign({}, item), { status: false }));
-            if (this.loading && sam_tools_1.isFunc(func) && this.checkStatus()) {
+            if (this.loading && sam_tools_1.isArray(funcs) && this.checkStatus()) {
                 const endTime = new Date().getTime();
                 this.loading = false;
                 if ((endTime - this.startTime) < 2000 && !this.timeInstance) {
                     this.timeInstance = setTimeout(() => {
-                        func(false);
+                        funcs.forEach((func) => func.func(false));
                         clearTimeout(this.timeInstance);
                         this.timeInstance = null;
                     }, 2000);
                     return;
                 }
                 if (!this.timeInstance) {
-                    func(false);
+                    funcs.forEach((func) => func.func(false));
                     return;
                 }
             }
@@ -134,10 +137,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 this.end();
             });
         }
-        monitor(status, callback) {
+        monitor(status, key, callback) {
+            var _a;
             if (sam_tools_1.isFunc(this.monitorEvent[status]))
                 return;
-            this.monitorEvent[status] = callback;
+            (_a = this.monitorEvent[status]) === null || _a === void 0 ? void 0 : _a.push({ key, func: callback });
         }
         getPackage(name, version) {
             const pkg = this.scripts.find((script) => script.name === name && script.version === version);

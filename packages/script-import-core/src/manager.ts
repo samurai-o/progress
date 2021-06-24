@@ -1,4 +1,4 @@
-import { isEmpty, isFunc, isObject, isString } from 'sam-tools';
+import { isEmpty, isFunc, isObject, isString, isArray } from 'sam-tools';
 import { EventType, FecthTask, GetFuncType, MonitorEvent, ScriptTask } from './interface';
 
 export class ScriptManager {
@@ -14,7 +14,10 @@ export class ScriptManager {
     private loading: boolean = false;
     private scripts: ScriptTask[] = [];
     private fetchs: FecthTask[] = [];
-    private monitorEvent: { [key in EventType]?: MonitorEvent } = {};
+    private monitorEvent: { [key in EventType]?: { key: string, func: MonitorEvent }[] } = {
+        start: [],
+        end: [],
+    };
 
 
     /**
@@ -89,33 +92,33 @@ export class ScriptManager {
     }
 
     public start(item?: FecthTask) {
-        const func = this.monitorEvent["start"];
-        if (!this.loading && isFunc(func)) {
+        const funcs = this.monitorEvent["start"];
+        if (!this.loading && isArray(funcs)) {
             if (item) this.publish("fetch", { ...item, status: true });
             // 加载开始时间
             this.startTime = new Date().getTime();
             this.loading = true;
-            func(true);
+            funcs.forEach((func) => func.func(true));
         };
     }
 
     public end(item?: FecthTask) {
-        const func = this.monitorEvent["end"];
+        const funcs = this.monitorEvent["end"];
         if (item) this.publish("fetch", { ...item, status: false });
-        if (this.loading && isFunc(func) && this.checkStatus()) {
+        if (this.loading && isArray(funcs) && this.checkStatus()) {
             // 加载结束时间
             const endTime = new Date().getTime();
             this.loading = false;
             if ((endTime - this.startTime) < 2000 && !this.timeInstance) {
                 this.timeInstance = setTimeout(() => {
-                    func(false);
+                    funcs.forEach((func) => func.func(false));
                     clearTimeout(this.timeInstance as any);
                     this.timeInstance = null;
                 }, 2000);
                 return;
             }
             if (!this.timeInstance) {
-                func(false);
+                funcs.forEach((func) => func.func(false));
                 return;
             }
         }
@@ -143,9 +146,9 @@ export class ScriptManager {
      * 监听函数注册，当所有脚本都已经加载完毕后访问
      * @param callback 
      */
-    public monitor(status: EventType, callback: MonitorEvent) {
+    public monitor(status: EventType, key: string, callback: MonitorEvent) {
         if (isFunc(this.monitorEvent[status])) return;
-        this.monitorEvent[status] = callback;
+        this.monitorEvent[status]?.push({ key, func: callback });
     }
 
     public getPackage<P = any>(name: string, version: string): P | null {
