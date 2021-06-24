@@ -13,7 +13,6 @@ export type FecthTask = {
     params?: any;
     method: string;
 }
-
 export type EventType = "start" | "end";
 
 export type MonitorEvent = (status: boolean) => void;
