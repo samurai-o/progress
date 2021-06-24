@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "UMD",
     "declaration": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
