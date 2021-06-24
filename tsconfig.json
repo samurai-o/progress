@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "UMD",
+    "module": "CommonJS",
     "declaration": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
