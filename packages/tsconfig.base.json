@@ -6,7 +6,6 @@
     "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
-    "importHelpers": true,
     "removeComments": false,
     "noLib": false,
     "esModuleInterop": true,
