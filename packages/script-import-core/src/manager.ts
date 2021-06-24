@@ -1,5 +1,5 @@
 import { isEmpty, isFunc, isObject, isString } from 'sam-tools';
-import { EventType, MonitorEvent, ScriptInfo } from './interface';
+import { EventType, FecthTask, GetFuncType, MonitorEvent, ScriptTask } from './interface';
 
 export class ScriptManager {
     constructor() {
@@ -12,7 +12,8 @@ export class ScriptManager {
     private startTime: number = 0;
     private timeInstance: number | null = null;
     private loading: boolean = false;
-    private scripts: ScriptInfo[] = [];
+    private scripts: ScriptTask[] = [];
+    private fetchs: FecthTask[] = [];
     private monitorEvent: { [key in EventType]?: MonitorEvent } = {};
 
 
@@ -21,13 +22,22 @@ export class ScriptManager {
      * @param item 
      * @returns 
      */
-    private publish(item: ScriptInfo) {
-        const task = this.scripts.find((sc) => sc.name === item.name);
-        if (task) {
-            this.scripts = this.scripts.filter((script) => script.name !== item.name).concat({ ...task, ...item });
-            return;
+    private publish(type: "script" | "fetch", item: ScriptTask | FecthTask) {
+        if (type === 'script') {
+            const task = this.scripts.find((sc) => sc.name === (item as ScriptTask).name);
+            if (task) {
+                this.scripts = this.scripts.filter((script) => script.name !== (item as ScriptTask).name).concat({ ...task, ...item });
+                return;
+            }
+            this.scripts.push(item as ScriptTask);
+        } else {
+            const task = this.fetchs.find((fet) => fet.path === (item as FecthTask).path && fet.method === (item as FecthTask).method && fet.time === (item as FecthTask).time);
+            if (task && !item.status) {
+                this.fetchs = this.fetchs.filter((fet) => fet.path !== (item as FecthTask).path && fet.method !== (item as FecthTask).method && fet.time !== (item as FecthTask).time);
+                return;
+            }
+            this.fetchs.push(item as FecthTask);
         }
-        this.scripts.push(item);
     }
 
     /**
@@ -38,7 +48,7 @@ export class ScriptManager {
         return document.getElementById(`dynamic-scipt-${name}`);
     }
 
-    private setScriptInstance(item: ScriptInfo) {
+    private setScriptInstance(item: ScriptTask) {
         const { name, version, script } = item;
         const oldNode = this.getScriptInstance(name);
         if (!!oldNode) {
@@ -56,11 +66,11 @@ export class ScriptManager {
             });
         }).then((res) => {
             // 脚本加载完成后删除挂载在window中的对象
-            this.publish({ name, version, script, status: false, object: res });
+            this.publish("script", { name, version, script, status: false, object: res });
             delete window[item.name as any];
             return true;
         }).catch(() => {
-            this.publish({ name, version, script, status: false });
+            this.publish("script", { name, version, script, status: false });
             return false;
         });
     }
@@ -70,17 +80,18 @@ export class ScriptManager {
      * @param item 
      * @returns 
      */
-    private loader(item: ScriptInfo): Promise<boolean> {
+    private loader(item: ScriptTask): Promise<boolean> {
         const node = document.createElement('script');
         if (isEmpty(item) || !isString(item.script)) return Promise.resolve(false);
         const { name, version, script } = item;
-        this.publish({ name, version, script, status: true });
+        this.publish('script', { name, version, script, status: true });
         return this.setScriptInstance(item);
     }
 
-    public start() {
+    public start(item?: FecthTask) {
         const func = this.monitorEvent["start"];
         if (!this.loading && isFunc(func)) {
+            if (item) this.publish("fetch", { ...item, status: true });
             // 加载开始时间
             this.startTime = new Date().getTime();
             this.loading = true;
@@ -88,8 +99,9 @@ export class ScriptManager {
         };
     }
 
-    public end() {
+    public end(item?: FecthTask) {
         const func = this.monitorEvent["end"];
+        if (item) this.publish("fetch", { ...item, status: false });
         if (this.loading && isFunc(func) && this.checkStatus()) {
             // 加载结束时间
             const endTime = new Date().getTime();
@@ -113,15 +125,15 @@ export class ScriptManager {
      * 检查是否都加载完成了
      */
     private checkStatus() {
-        return this.scripts.every((script) => !script.status);
+        return this.scripts.every((script) => !script.status) && this.fetchs.every((fet) => !fet.status);
     }
 
-    public async import<P = any>(item: ScriptInfo): Promise<P> {
+    public async import<P = any>(item: ScriptTask): Promise<P> {
         await this.loader(item);
         return this.getPackage(item.name, item.version) as any;
     }
 
-    public async imports(items: ScriptInfo[]) {
+    public async imports(items: ScriptTask[]) {
         this.start();
         await Promise.all(items.map((item) => this.loader(item))).then((values) => values.every((value) => !!value)).catch(() => false);
         this.end();

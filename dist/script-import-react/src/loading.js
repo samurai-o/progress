@@ -35,8 +35,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     const react_1 = __importStar(require("react"));
     const styled_components_1 = __importStar(require("styled-components"));
     const classnames_1 = __importDefault(require("classnames"));
-    const css = styled_components_1.default.default;
-    const Container = css.div `
+    window.styled = styled_components_1.default;
+    const Container = styled_components_1.default.div `
     position: absolute;
     top: 0;
     left: 0;
@@ -49,6 +49,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     align-items: center;
     justify-content: center;
     opacity: ${props => !!props.open ? 1 : 0};
+    pointer-events: ${props => !!props.open ? "all" : "none"};
     '&.open': {
         opacity: 1;
     },
@@ -80,7 +81,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     const squarejellyboxshadow = styled_components_1.keyframes `
    50%{-webkit-transform:scale(1.25, 1);transform:scale(1.25, 1)}
 `;
-    const DefaultLoadingContainer = css.div `
+    const DefaultLoadingContainer = styled_components_1.default.div `
     position:relative;
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;

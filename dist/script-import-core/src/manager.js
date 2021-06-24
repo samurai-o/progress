@@ -26,19 +26,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             this.timeInstance = null;
             this.loading = false;
             this.scripts = [];
+            this.fetchs = [];
             this.monitorEvent = {};
             if (sam_tools_1.isObject(ScriptManager.manager))
                 return ScriptManager.manager;
             ScriptManager.manager = this;
             return ScriptManager.manager;
         }
-        publish(item) {
-            const task = this.scripts.find((sc) => sc.name === item.name);
-            if (task) {
-                this.scripts = this.scripts.filter((script) => script.name !== item.name).concat(Object.assign(Object.assign({}, task), item));
-                return;
+        publish(type, item) {
+            if (type === 'script') {
+                const task = this.scripts.find((sc) => sc.name === item.name);
+                if (task) {
+                    this.scripts = this.scripts.filter((script) => script.name !== item.name).concat(Object.assign(Object.assign({}, task), item));
+                    return;
+                }
+                this.scripts.push(item);
             }
-            this.scripts.push(item);
+            else {
+                const task = this.fetchs.find((fet) => fet.path === item.path && fet.method === item.method && fet.time === item.time);
+                if (task && !item.status) {
+                    this.fetchs = this.fetchs.filter((fet) => fet.path !== item.path && fet.method !== item.method && fet.time !== item.time);
+                    return;
+                }
+                this.fetchs.push(item);
+            }
         }
         getScriptInstance(name) {
             return document.getElementById(`dynamic-scipt-${name}`);
@@ -59,11 +70,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     res(window[item.name]);
                 });
             }).then((res) => {
-                this.publish({ name, version, script, status: false, object: res });
+                this.publish("script", { name, version, script, status: false, object: res });
                 delete window[item.name];
                 return true;
             }).catch(() => {
-                this.publish({ name, version, script, status: false });
+                this.publish("script", { name, version, script, status: false });
                 return false;
             });
         }
@@ -72,20 +83,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             if (sam_tools_1.isEmpty(item) || !sam_tools_1.isString(item.script))
                 return Promise.resolve(false);
             const { name, version, script } = item;
-            this.publish({ name, version, script, status: true });
+            this.publish('script', { name, version, script, status: true });
             return this.setScriptInstance(item);
         }
-        start() {
+        start(item) {
             const func = this.monitorEvent["start"];
             if (!this.loading && sam_tools_1.isFunc(func)) {
+                if (item)
+                    this.publish("fetch", Object.assign(Object.assign({}, item), { status: true }));
                 this.startTime = new Date().getTime();
                 this.loading = true;
                 func(true);
             }
             ;
         }
-        end() {
+        end(item) {
             const func = this.monitorEvent["end"];
+            if (item)
+                this.publish("fetch", Object.assign(Object.assign({}, item), { status: false }));
             if (this.loading && sam_tools_1.isFunc(func) && this.checkStatus()) {
                 const endTime = new Date().getTime();
                 this.loading = false;
@@ -104,7 +119,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             }
         }
         checkStatus() {
-            return this.scripts.every((script) => !script.status);
+            return this.scripts.every((script) => !script.status) && this.fetchs.every((fet) => !fet.status);
         }
         import(item) {
             return __awaiter(this, void 0, void 0, function* () {

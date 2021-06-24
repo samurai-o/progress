@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { render } from 'react-dom';
-import { ScriptInfo } from 'script-import-core';
+import { ScriptTask, FecthTask } from 'script-import-core';
 import { ScriptManager } from 'script-import-core';
 import { DefaultLoading, ImportLoading, ImportLoadingRef } from './loading';
 import { PackageContext } from './packageContext';
@@ -46,7 +46,7 @@ export function PackageProvider(props: PackageProviderProps) {
      * 单个加载
      * @param item 
      */
-    const importPackage = async (item: ScriptInfo) => {
+    const importPackage = async (item: ScriptTask) => {
         await manager.import(item);
     }
 
@@ -54,15 +54,15 @@ export function PackageProvider(props: PackageProviderProps) {
      * 批量加载
      * @param items 
      */
-    const importPackages = async (items: ScriptInfo[]) => {
+    const importPackages = async (items: ScriptTask[]) => {
         await manager.imports(items);
     }
 
-    const status = async (status: boolean) => {
+    const status = async (status: boolean, item?: FecthTask) => {
         if (status) {
-            await manager.start();
+            await manager.start(item);
         } else {
-            await manager.end();
+            await manager.end(item);
         }
     }
 

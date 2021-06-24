@@ -13,6 +13,7 @@
     const react_1 = require("react");
     exports.PackageContext = react_1.createContext({
         packages: [],
+        status: (status) => Promise.resolve(),
         importPackage: (item) => Promise.resolve(),
         importPackages: (items) => Promise.resolve(),
     });

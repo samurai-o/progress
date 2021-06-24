@@ -78,7 +78,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         const importPackages = (items) => __awaiter(this, void 0, void 0, function* () {
             yield manager.imports(items);
         });
+        const status = (status, item) => __awaiter(this, void 0, void 0, function* () {
+            if (status) {
+                yield manager.start(item);
+            }
+            else {
+                yield manager.end(item);
+            }
+        });
         return (react_1.default.createElement(packageContext_1.PackageContext.Provider, { value: {
+                status,
                 packages: [],
                 importPackage,
                 importPackages,
