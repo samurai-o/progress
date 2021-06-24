@@ -14,7 +14,7 @@ export class ScriptManager {
     private loading: boolean = false;
     private scripts: ScriptTask[] = [];
     private fetchs: FecthTask[] = [];
-    private monitorEvent: { [key in EventType]?: { key: string, func: MonitorEvent }[] } = {
+    private monitorEvent: { [key in EventType]: { key: string, func: MonitorEvent }[] } = {
         start: [],
         end: [],
     };
@@ -148,17 +148,17 @@ export class ScriptManager {
      */
     public monitor(status: EventType, key: string, callback: MonitorEvent) {
         if (isFunc(this.monitorEvent[status])) return;
-        const old = this.monitorEvent[status]?.find((event) => event.key === key);
+        const old = this.monitorEvent[status].find((event) => event.key === key);
         if (old) {
-            this.monitorEvent[status]?.filter((event) => event.key !== key).concat([{ key, func: callback }]);
+            this.monitorEvent[status].filter((event) => event.key !== key).concat([{ key, func: callback }]);
             return;
         }
-        this.monitorEvent[status]?.push({ key, func: callback });
+        this.monitorEvent[status].push({ key, func: callback });
     }
 
     public getPackage<P = any>(name: string, version: string): P | null {
-        const pkg = this.scripts.find((script) => script.name === name && script.version === version);
-        if (isObject(pkg)) return pkg?.object;
+        const pkg = this.scripts.find((script) => script.name === name && script.version === version) || { object: {} };
+        if (isObject(pkg)) return pkg.object;
         return null;
     }
 }
