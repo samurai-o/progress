@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ProgressCore } from 'progress-core';
 import { LoadingContainer, ProgressLoading } from './loading';
-
 export class Progress extends ProgressCore {
     constructor() {
         super();
