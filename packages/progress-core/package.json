@@ -1,5 +1,5 @@
 {
-  "name": "progress-core",
+  "name": "@frade-sam/progress-core",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
@@ -30,5 +30,5 @@
   "dependencies": {
     "@frade-sam/samtools": "^1.0.18"
   },
-  "gitHead": "6683824bee37b58e9eb2858c9c47382d16394f74"
+  "gitHead": "8d69178a4ef32132249d77a2f604e7f968fd27e5"
 }

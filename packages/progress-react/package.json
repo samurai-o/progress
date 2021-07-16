@@ -1,5 +1,5 @@
 {
-  "name": "progress-react",
+  "name": "@frade-sam/progress-react",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
@@ -45,5 +45,5 @@
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.0"
   },
-  "gitHead": "6683824bee37b58e9eb2858c9c47382d16394f74"
+  "gitHead": "8d69178a4ef32132249d77a2f604e7f968fd27e5"
 }
