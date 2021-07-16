@@ -1,6 +1,6 @@
 {
   "name": "progress-react",
-  "version": "0.0.1",
+  "version": "0.0.48",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
   "homepage": "",
@@ -20,9 +20,9 @@
   "dependencies": {
     "@frade-sam/samtools": "^1.0.18",
     "classnames": "^2.3.1",
+    "progress-core": "^0.0.48",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "progress-core": "^0.0.1",
     "styled-components": "^5.3.0"
   },
   "peerDependencies": {
