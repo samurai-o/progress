@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ProgressCore } from 'progress-core';
+import { ProgressCore } from '@frade-sam/progress-core';
 import { LoadingContainer, ProgressLoading } from './loading';
 export class Progress extends ProgressCore {
     constructor() {
