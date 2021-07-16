@@ -9,11 +9,14 @@ export type MonitorEvent = (status: boolean) => void;
 
 export type GetFuncType<T> = T extends (arg: infer P) => void ? P : string;
 
+// your answers
+export type Curry<T> = T extends (...args: infer A) => infer R ? (...arg: A) => R : never
+
+
+
 export type Task<D = any> = {
     name: string;
     id: string;
     type: TaskType;
-    promise?: (...args: any) => Promise<D>;
-    url?: string; // 链接地址
     status?: boolean; // 任务状态
 }

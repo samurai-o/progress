@@ -1,5 +1,5 @@
 import { isEmpty, isFunc, isObject, isString, isArray } from '@frade-sam/samtools';
-import { EventType, MonitorEvent, Task, TaskType } from './interface';
+import { Curry, EventType, MonitorEvent, Task, TaskType } from './interface';
 
 export class ProgressCore {
     constructor() {
@@ -20,15 +20,16 @@ export class ProgressCore {
         end: [],
     };
 
-    private publish<D = any>(item: Task): Promise<D | null> | (() => Promise<D>) {
-        const { url, promise } = item;
+    private publish<T = any>(item: Task, func: T): Curry<T> | null {
+        const find = this.tasks.find((task) => task.id === item.id && task.name === item.name && task.type === item.type && !!task.status);
 
         /** 资源地址为空或者有同一个任务时方式进度 */
-        if (isEmpty(url) && !isFunc(promise)) return Promise.resolve(null);
-        if (isFunc(promise)) {
-            this.tasks.push(item);
-            return async (): Promise<D> => {
-                return promise(arguments).then((res) => {
+        if (!isFunc(func)) return null;
+        this.tasks.push(item);
+        const taskFunc: any = (...args: any) => {
+            const res = func(...args);
+            if (res instanceof Promise) {
+                return res.then((res) => {
                     this.end({ ...item, status: false })
                     return res;
                 }).catch((err) => {
@@ -36,38 +37,13 @@ export class ProgressCore {
                     return err;
                 })
             }
-        }
-        const find = this.tasks.find((task) => task.id === item.id && task.name === item.name && task.url === item.url && !!task.status);
-        if (find) return Promise.resolve(null);
-        this.tasks.push(item);
-        return new Promise<D | null>((res) => {
-            const oldnode = this.getScriptInstance(item.name);
-            /** 如果存在旧的脚本或者资源则删除 */
-            if (oldnode) oldnode.remove();
-            const node = document.createElement('script');
-            node.src = item.url as string;
-            node.id = `dynamic-scipt-${item.name}`;
-            node.dataset.id = item.id;
-            document.body.append(node);
-            node.addEventListener('load', () => {
-                res(window[item.name as any] as any);
-            })
-        }).then((res) => {
-            // 脚本加载完成后删除挂载在window中的对象
             this.end({ ...item, status: false })
-            delete window[item.name as any];
             return res;
-        }).catch(() => {
-            this.end({ ...item, status: false })
-            return null;
-        });
+        }
+        return taskFunc;
     }
 
-    private getScriptInstance(name: string) {
-        return document.getElementById(`dynamic-scipt-${name}`);
-    }
-
-    public start<D = any>(item: Task): Promise<D | null> | (() => Promise<D>) {
+    public progress<T = any>(item: Task, func: T): Curry<T> | null {
         const funcs = this.monitorEvent["start"];
         const assestsstatus = this.tasks.filter((task) => task.type === 'assets').every((task) => !task.status);
         if (isArray(funcs)) {
@@ -77,17 +53,17 @@ export class ProgressCore {
                 /** 资源进度优先于接口进度样式 */
                 if (item.type === 'fetch' && assestsstatus) {
                     funcs.find((func) => func.key === 'fetch')?.func(true);
-                    return this.publish<D>({ ...item, status: true });
+                    return this.publish<T>({ ...item, status: true }, func);
                 }
                 if (item.type === 'assets') {
                     funcs.find((func) => func.key === 'assets')?.func(true);
-                    return this.publish<D>({ ...item, status: true });
+                    return this.publish<T>({ ...item, status: true }, func);
                 }
-                return Promise.resolve(null);
+                return null;
             }
-            return Promise.resolve(null);
+            return null;
         };
-        return Promise.resolve(null);
+        return null;
     }
 
     private end(item: Task) {
@@ -118,7 +94,7 @@ export class ProgressCore {
      * 监听函数注册，当所有脚本都已经加载完毕后访问
      * @param callback 
      */
-    public monitor(status: EventType, key: TaskType, callback: MonitorEvent) {
+    protected monitor(status: EventType, key: TaskType, callback: MonitorEvent) {
         if (isFunc(this.monitorEvent[status])) return;
         const old = this.monitorEvent[status].find((event) => event.key === key);
         if (old) {
