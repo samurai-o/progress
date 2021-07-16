@@ -7,7 +7,6 @@ export class Progress extends ProgressCore {
         super();
         this.init();
     }
-
     private assetsLoading: LoadingContainer | undefined;
     private progressLoading: ProgressLoading | undefined;
     private init = () => {
