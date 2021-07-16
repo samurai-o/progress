@@ -17,6 +17,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@frade-sam/samtools": "^1.0.18",
     "classnames": "^2.3.1",
@@ -42,5 +45,5 @@
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.0"
   },
-  "gitHead": "59856e73c6c2ca6ae33ed1479f577360dba267d3"
+  "gitHead": "6683824bee37b58e9eb2858c9c47382d16394f74"
 }

@@ -14,6 +14,9 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc"
   },
@@ -27,5 +30,5 @@
   "dependencies": {
     "@frade-sam/samtools": "^1.0.18"
   },
-  "gitHead": "59856e73c6c2ca6ae33ed1479f577360dba267d3"
+  "gitHead": "6683824bee37b58e9eb2858c9c47382d16394f74"
 }
