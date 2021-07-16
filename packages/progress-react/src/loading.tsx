@@ -49,7 +49,7 @@ export class ProgressLoading extends React.Component<any, LoadingState> {
     render() {
         return (
             <ProgressLoadingStyled loading={this.state.loading}>
-                {this.props.children}
+                {this.props.children ? React.cloneElement(this.props.children as JSX.Element, { loading: this.state.loading }) : null}
             </ProgressLoadingStyled>
         );
     }

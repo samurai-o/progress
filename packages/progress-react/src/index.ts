@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
 import { ProgressCore } from '@frade-sam/progress-core';
 import { LoadingContainer, ProgressLoading } from './loading';
@@ -9,6 +9,9 @@ export class Progress extends ProgressCore {
     }
     private assetsLoading: LoadingContainer | undefined;
     private progressLoading: ProgressLoading | undefined;
+    static Loading: FunctionComponent<{ loading: boolean }>;
+    static Progress: FunctionComponent<{ loading: boolean }>;
+
     private init = () => {
         let assetsloading = document.getElementById('assetsloading');
         let progressLoading = document.getElementById('progressloading');
@@ -30,8 +33,12 @@ export class Progress extends ProgressCore {
         progressLoading.style.setProperty('top', '0px');
         progressLoading.style.setProperty('z-index', '10000');
         progressLoading.style.setProperty('pointer-events', 'none');
-        this.assetsLoading = ReactDOM.render(React.createElement(LoadingContainer), assetsloading);
-        this.progressLoading = ReactDOM.render(React.createElement(ProgressLoading), progressLoading);
+        this.assetsLoading = ReactDOM.render(React.createElement(LoadingContainer, {
+            children: Progress.Loading ? React.createElement(Progress.Loading) : null
+        }), assetsloading);
+        this.progressLoading = ReactDOM.render(React.createElement(ProgressLoading, {
+            children: Progress.Progress ? React.createElement(Progress.Progress) : null
+        }), progressLoading);
         document.body.appendChild(assetsloading);
         document.body.appendChild(progressLoading);
         this.monitor('start', 'assets', (status) => {
@@ -46,5 +53,9 @@ export class Progress extends ProgressCore {
         this.monitor('end', 'assets', (status) => {
             if (this.assetsLoading) this.assetsLoading.status(false);
         })
+    }
+
+    public loading() {
+
     }
 }
