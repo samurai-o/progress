@@ -35,16 +35,16 @@ export class Progress extends ProgressCore {
         document.body.appendChild(assetsloading);
         document.body.appendChild(progressLoading);
         this.monitor('start', 'assets', (status) => {
-            this.assetsLoading?.status(true);
+            if (this.assetsLoading) this.assetsLoading.status(true);
         });
         this.monitor('start', 'fetch', (status) => {
-            this.progressLoading?.status(true);
+            if (this.progressLoading) this.progressLoading.status(true);
         });
         this.monitor('end', 'fetch', (status) => {
-            this.progressLoading?.status(false);
+            if (this.progressLoading) this.progressLoading.status(false);
         });
         this.monitor('end', 'assets', (status) => {
-            this.assetsLoading?.status(false);
+            if (this.assetsLoading) this.assetsLoading.status(false);
         })
     }
 }
