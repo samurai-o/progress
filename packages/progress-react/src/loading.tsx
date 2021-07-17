@@ -3,8 +3,6 @@ import { LoadingContainerStyled, ProgressLoadingStyled } from './loading.styled'
 
 export type LoadingState = {
     loading?: boolean;
-    count: number;
-    number: number;
 };
 
 export class LoadingContainer extends React.Component<any, LoadingState> {
@@ -12,8 +10,6 @@ export class LoadingContainer extends React.Component<any, LoadingState> {
         super(props, context);
         this.state = {
             loading: false,
-            count: 0,
-            number: 0,
         }
     }
 
@@ -39,21 +35,15 @@ export class ProgressLoading extends React.Component<any, LoadingState> {
         super(props, context);
         this.state = {
             loading: false,
-            count: 0,
-            number: 0,
         }
     }
 
     status = (status: boolean): Promise<boolean> => {
         return new Promise((res) => {
-            this.setState({ ...this.state, loading: status }, () => {
+            this.setState({ loading: status }, () => {
                 res(status);
             });
         })
-    }
-
-    progress = (number: number, count: number) => {
-        this.setState({ ...this.state, number, count })
     }
 
     render() {
