@@ -33,6 +33,7 @@ export class Progress extends ProgressCore {
         progressLoading.style.setProperty('top', '0px');
         progressLoading.style.setProperty('z-index', '10000');
         progressLoading.style.setProperty('pointer-events', 'none');
+        console.log(Progress.Loading);
         this.assetsLoading = ReactDOM.render(React.createElement(LoadingContainer, {
             children: Progress.Loading ? React.createElement(Progress.Loading) : null
         }), assetsloading);

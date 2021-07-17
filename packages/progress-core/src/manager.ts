@@ -1,5 +1,5 @@
 import { isEmpty, isFunc, isObject, isString, isArray } from '@frade-sam/samtools';
-import { Curry, EventType, MonitorEvent, Task, TaskType } from './interface';
+import { Curry, Descriptor, EventType, MonitorEvent, Task, TaskType } from './interface';
 
 export class ProgressCore {
     constructor() {
@@ -20,11 +20,10 @@ export class ProgressCore {
         end: [],
     };
 
-    private publish<T = any>(item: Task, func: T): Curry<T> | null {
-        const find = this.tasks.find((task) => task.id === item.id && task.name === item.name && task.type === item.type && !!task.status);
+    private publish<T = any>(item: Task, func: T): Curry<T> | T {
 
         /** 资源地址为空或者有同一个任务时方式进度 */
-        if (!isFunc(func)) return null;
+        if (!isFunc(func)) return func;
         this.tasks.push(item);
         const taskFunc: any = (...args: any) => {
             const res = func(...args);
@@ -43,29 +42,29 @@ export class ProgressCore {
         return taskFunc;
     }
 
-    public progress<T = any>(item: Task, func: T): Curry<T> | null {
-        const funcs = this.monitorEvent["start"];
-        const assestsstatus = this.tasks.filter((task) => task.type === 'assets').every((task) => !task.status);
-        if (isArray(funcs)) {
-            // 加载开始时间
+    public progress<T = any>(item: Task) {
+        return (target: T, key?: string, descriptor?: Descriptor): Curry<T> | T | Descriptor => {
+            const defaultFunc = descriptor ? descriptor : target;
+            if (!key && !descriptor && !isFunc(target)) return target;
+            if (descriptor && !isFunc(descriptor.value)) return descriptor;
+            const funcs = this.monitorEvent["start"];
+            const assestsstatus = this.tasks.filter((task) => task.type === 'assets').every((task) => !task.status);
+            if (!isArray(funcs)) return defaultFunc
+            if (item.type === 'fetch' && !assestsstatus) return defaultFunc
+            const task = funcs.find((func) => func.key === item.type);
+            if (!item) return defaultFunc
+            if (!task) return defaultFunc
             this.startTime = new Date().getTime();
-            if (item) {
-                /** 资源进度优先于接口进度样式 */
-                if (item.type === 'fetch' && assestsstatus) {
-                    const task = funcs.find((func) => func.key === 'fetch');
-                    if (task && isFunc(task.func)) task.func(true);
-                    return this.publish<T>({ ...item, status: true }, func);
-                }
-                if (item.type === 'assets') {
-                    const task = funcs.find((func) => func.key === 'assets');
-                    if (task && isFunc(task.func)) task.func(true);
-                    return this.publish<T>({ ...item, status: true }, func);
-                }
-                return null;
+            if (!isFunc(task.func)) return defaultFunc;
+            task.func(true);
+            const descriptorFunc = descriptor ? descriptor.value : target;
+            const func = this.publish<T>({ ...item, status: true }, descriptorFunc);
+            if (descriptor) {
+                descriptor.value = func;
+                return descriptor;
             }
-            return null;
-        };
-        return null;
+            return func;
+        }
     }
 
     private end(item: Task) {

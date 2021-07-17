@@ -20,3 +20,10 @@ export type Task<D = any> = {
     type: TaskType;
     status?: boolean; // 任务状态
 }
+
+export type Descriptor<T = any> = {
+    configurable: boolean;
+    enumerable: boolean;
+    value: T;
+    writable: boolean;
+}

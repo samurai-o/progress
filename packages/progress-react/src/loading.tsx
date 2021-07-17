@@ -22,9 +22,10 @@ export class LoadingContainer extends React.Component<any, LoadingState> {
     }
 
     render() {
+        console.log('1', this.props);
         return (
             <LoadingContainerStyled loading={this.state.loading}>
-                {this.props.children}
+                {this.props.children ? React.cloneElement(this.props.children as JSX.Element, { loading: this.state.loading }) : null}
             </LoadingContainerStyled>
         );
     }
@@ -47,6 +48,7 @@ export class ProgressLoading extends React.Component<any, LoadingState> {
     }
 
     render() {
+        console.log(this.props);
         return (
             <ProgressLoadingStyled loading={this.state.loading}>
                 {this.props.children ? React.cloneElement(this.props.children as JSX.Element, { loading: this.state.loading }) : null}
