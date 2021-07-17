@@ -1,18 +1,16 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ComponentClass } from "react";
 import ReactDOM from "react-dom";
-import { ProgressCore } from '@frade-sam/progress-core';
+import { ProgressCore, TaskType } from '@frade-sam/progress-core';
 import { LoadingContainer, ProgressLoading } from './loading';
 export class Progress extends ProgressCore {
     constructor() {
         super();
-        this.init();
     }
     private assetsLoading: LoadingContainer | undefined;
     private progressLoading: ProgressLoading | undefined;
-    static Loading: FunctionComponent<{ loading: boolean }>;
-    static Progress: FunctionComponent<{ loading: boolean }>;
+    private Loading: FunctionComponent<{ loading: boolean; }> | ComponentClass<{ loading: boolean; }> | undefined;
 
-    private init = () => {
+    public init = () => {
         let assetsloading = document.getElementById('assetsloading');
         let progressLoading = document.getElementById('progressloading');
         if (assetsloading) assetsloading.remove();
@@ -26,21 +24,10 @@ export class Progress extends ProgressCore {
         assetsloading.style.setProperty('z-index', '10000');
         assetsloading.style.setProperty('pointer-events', 'none');
 
-        progressLoading = document.createElement('div');
-        progressLoading.id = 'progressloading';
-        progressLoading.style.setProperty('width', '100vw');
-        progressLoading.style.setProperty('position', 'absolute');
-        progressLoading.style.setProperty('top', '0px');
-        progressLoading.style.setProperty('z-index', '10000');
-        progressLoading.style.setProperty('pointer-events', 'none');
         this.assetsLoading = ReactDOM.render(React.createElement(LoadingContainer, {
-            children: Progress.Loading ? React.createElement(Progress.Loading) : null
+            children: this.Loading ? React.createElement(this.Loading) : null
         }), assetsloading);
-        this.progressLoading = ReactDOM.render(React.createElement(ProgressLoading, {
-            children: Progress.Progress ? React.createElement(Progress.Progress) : null
-        }), progressLoading);
         document.body.appendChild(assetsloading);
-        document.body.appendChild(progressLoading);
         this.monitor('start', 'assets', (status) => {
             if (this.assetsLoading) this.assetsLoading.status(true);
         });
@@ -52,6 +39,10 @@ export class Progress extends ProgressCore {
         });
         this.monitor('end', 'assets', (status) => {
             if (this.assetsLoading) this.assetsLoading.status(false);
-        })
+        });
+    }
+
+    public plugins = (type: TaskType, Component: FunctionComponent<{ loading: boolean; }> | ComponentClass<{ loading: boolean; }>) => {
+        if (type === "assets") this.Loading = Component;
     }
 }

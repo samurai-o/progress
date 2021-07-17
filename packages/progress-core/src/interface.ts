@@ -1,5 +1,5 @@
 // 事件类型
-export type EventType = "start" | "end";
+export type EventType = "start" | "end" | "progress";
 
 // 任务类型
 export type TaskType = "assets" | "fetch";

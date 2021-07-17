@@ -22,13 +22,15 @@
   },
   "devDependencies": {
     "@frade-sam/samtools": "^1.0.18",
+    "@types/nprogress": "^0.2.0",
     "typescript": "^4.2.4"
   },
   "peerDependencies": {
     "@frade-sam/samtools": "^1.0.18"
   },
   "dependencies": {
-    "@frade-sam/samtools": "^1.0.18"
+    "@frade-sam/samtools": "^1.0.18",
+    "nprogress": "^0.2.0"
   },
   "gitHead": "8d69178a4ef32132249d77a2f604e7f968fd27e5"
 }
