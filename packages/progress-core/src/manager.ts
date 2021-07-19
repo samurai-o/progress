@@ -1,6 +1,6 @@
 import { isEmpty, isFunc, isObject, isArray } from '@frade-sam/samtools';
 import Nprogress from "nprogress";
-import { Curry, Descriptor, EventType, MonitorEvent, Task, TaskType } from './interface';
+import { Curry, EventType, MonitorEvent, Task, TaskType } from './interface';
 
 export class ProgressCore {
     constructor() {
@@ -55,7 +55,7 @@ export class ProgressCore {
     }
 
     public progress<T = any>(item: Task) {
-        return (target: T, key?: any, descriptor?: any): Curry<T> | T | Descriptor => {
+        return (target: T, key?: any, descriptor?: any): Curry<T> | T => {
             if (!key && !descriptor && !isFunc(target)) return target;
             if (descriptor && !isFunc(descriptor.value)) return descriptor;
             const descriptorFunc = descriptor ? descriptor.value : target;
