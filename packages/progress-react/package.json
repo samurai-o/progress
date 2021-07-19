@@ -1,6 +1,6 @@
 {
   "name": "@frade-sam/progress-react",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "> TODO: description",
   "author": "刘伟 <liuwei03@dongfangfuli.com>",
   "homepage": "",
@@ -21,7 +21,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@frade-sam/progress-core": "^1.0.15",
+    "@frade-sam/progress-core": "^1.0.16",
     "@frade-sam/samtools": "^1.0.18",
     "classnames": "^2.3.1",
     "nprogress": "^0.2.0",
