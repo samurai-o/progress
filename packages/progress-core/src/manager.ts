@@ -34,8 +34,8 @@ export class ProgressCore {
         if (!isArray(funcs)) return func;
         const task = funcs.find((func) => func.key === item.type);
         if (!task || !isFunc(task.func)) return func;
-
         const taskFunc: any = (...args: any) => {
+            this.startTime = new Date().getTime();
             this.tasks.push(item);
             const res = func(...args);
             if (res instanceof Promise) {
