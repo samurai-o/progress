@@ -98,7 +98,7 @@ export class ProgressCore {
      * 监听函数注册，当所有脚本都已经加载完毕后访问
      * @param callback 
      */
-    protected monitor(status: EventType, key: TaskType, callback: MonitorEvent) {
+    private monitor(status: EventType, key: TaskType, callback: MonitorEvent) {
         if (isFunc(this.monitorEvent[status])) return;
         const old = this.monitorEvent[status].find((event) => event.key === key);
         if (old) {
@@ -106,5 +106,13 @@ export class ProgressCore {
             return;
         }
         this.monitorEvent[status].push({ key, func: callback });
+    }
+
+    protected onLoading(status: EventType, callback: MonitorEvent) {
+        this.monitor(status, "assets", callback);
+    }
+
+    protected onProgress(status: EventType, callback: MonitorEvent) {
+        this.monitor(status, "fetch", callback);
     }
 }

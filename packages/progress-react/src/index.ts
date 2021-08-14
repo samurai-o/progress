@@ -11,6 +11,7 @@ export class Progress extends ProgressCore {
     private Loading: FunctionComponent<{ loading: boolean; }> | ComponentClass<{ loading: boolean; }> | undefined;
 
     public init = () => {
+        // 创建全局loading动画dom
         let assetsloading = document.getElementById('assetsloading');
         let progressLoading = document.getElementById('progressloading');
         if (assetsloading) assetsloading.remove();
@@ -28,6 +29,7 @@ export class Progress extends ProgressCore {
             children: this.Loading ? React.createElement(this.Loading) : null
         }), assetsloading);
         document.body.appendChild(assetsloading);
+        // 全局loading
         this.monitor('start', 'assets', (status) => {
             if (this.assetsLoading) this.assetsLoading.status(true);
         });

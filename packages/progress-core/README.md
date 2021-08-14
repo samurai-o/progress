@@ -1,11 +1,56 @@
-# `script-import-core`
+# `@frade-sam/progress-core`
 
 > TODO: description
 
-## Usage
+## 使用方式
 
-```
-const scriptImportCore = require('script-import-core');
+```typescript
+import {ProgressCore } from '@frade-sam/progress-core';
+
+class Progress extends ProgressCore {
+    constructor() {
+        super();
+    }
+    private assetsLoading: LoadingContainer | undefined;
+    private progressLoading: ProgressLoading | undefined;
+    private Loading: FunctionComponent<{ loading: boolean; }> | ComponentClass<{ loading: boolean; }> | undefined;
+
+    public init = () => {
+        let assetsloading = document.getElementById('assetsloading');
+        let progressLoading = document.getElementById('progressloading');
+        if (assetsloading) assetsloading.remove();
+        if (progressLoading) progressLoading.remove();
+        /** loading创建 */
+        assetsloading = document.createElement('div');
+        assetsloading.id = 'assetsloading';
+        assetsloading.style.setProperty('width', '100vw');
+        assetsloading.style.setProperty('position', 'absolute');
+        assetsloading.style.setProperty('top', '0px');
+        assetsloading.style.setProperty('z-index', '10000');
+        assetsloading.style.setProperty('pointer-events', 'none');
+
+        this.assetsLoading = ReactDOM.render(React.createElement(LoadingContainer, {
+            children: this.Loading ? React.createElement(this.Loading) : null
+        }), assetsloading);
+        document.body.appendChild(assetsloading);
+        this.monitor('start', 'assets', (status) => {
+            if (this.assetsLoading) this.assetsLoading.status(true);
+        });
+        this.monitor('start', 'fetch', (status) => {
+            if (this.progressLoading) this.progressLoading.status(true);
+        });
+        this.monitor('end', 'fetch', (status) => {
+            if (this.progressLoading) this.progressLoading.status(false);
+        });
+        this.monitor('end', 'assets', (status) => {
+            if (this.assetsLoading) this.assetsLoading.status(false);
+        });
+    }
+
+    public plugins = (type: TaskType, Component: FunctionComponent<{ loading: boolean; }> | ComponentClass<{ loading: boolean; }>) => {
+        if (type === "assets") this.Loading = Component;
+    }
+}
 
 // TODO: DEMONSTRATE API
 ```
